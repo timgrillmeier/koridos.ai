@@ -173,7 +173,7 @@ nav.scrolled {
 
 .hero-headline {
   font-family: 'Mulish', sans-serif;
-  font-weight: 700;
+  font-weight: 550;
   font-size: clamp(2.2rem, 4.5vw, 3.4rem);
   line-height: 1.15;
   color: var(--text-primary);
@@ -695,7 +695,7 @@ body::after {
     <li><a href="#approach">Approach</a></li>
     <li><a href="#principles">Principles</a></li>
     <li><a href="#difference">The Difference</a></li>
-    <li><a href="#horizon">Early Access</a></li>
+    <!-- <li><a href="#horizon">Early Access</a></li> -->
   </ul>
 </nav>
 
@@ -714,15 +714,31 @@ body::after {
   </div>
 </section>
 
-<!-- Approach -->
-<section id="approach">
-  <div class="container">
+<!-- Difference -->
+<section id="difference">
+  <div class="container-wide">
     <div class="reveal">
-      <div class="section-label">Our Approach</div>
-      <h2 class="approach-headline">Capability is easy. <em>Trustworthiness</em> is the hard part.</h2>
-      <div class="approach-body">
-        <p>Every AI company is building agents that can do more. We're building agents that stay good at what they do — next week, next month, and after the hundredth task. That means solving a different problem: not capability, but consistency.</p>
-        <p>Koridos agents are governed at the architectural level. They understand their own limits. They don't quietly drift or subtly degrade. When you give a Koridos agent real responsibility, it rewards that trust by compounding it.</p>
+      <div class="difference-header">
+        <div class="section-label">The Difference</div>
+        <h2>Same conditions. Different architecture.</h2>
+        <p>Every agent faces pressure — shifting context, competing priorities, accumulating uncertainty. The question isn't whether your agent will be tested, but what happens when it is. Without structural governance, agents lose coherence under stress. Connections degrade, context drifts, and eventually the system has to be rebuilt from scratch.</p>
+        <p>Governed agents absorb the same shocks and hold their shape. They correct, they adapt, they maintain the relationships that make them useful. That's the difference between an agent you monitor and one you trust.</p>
+      </div>
+      <div class="difference-comparison">
+        <div class="diff-panel ungoverned">
+          <canvas class="diff-panel-canvas" id="canvas-ungoverned"></canvas>
+          <div class="diff-panel-label">
+            <h3>Without Governance</h3>
+            <p>Starts strong. Connections form easily. But over time, drift sets in — coherence fades, relationships break down, the system loses its shape.</p>
+          </div>
+        </div>
+        <div class="diff-panel governed">
+          <canvas class="diff-panel-canvas" id="canvas-governed"></canvas>
+          <div class="diff-panel-label">
+            <h3>With Governance</h3>
+            <p>Same perturbations, same pressures. But the agents correct course. Connections adapt rather than break. The structure breathes — and holds.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -767,31 +783,15 @@ body::after {
   </div>
 </section>
 
-<!-- Difference -->
-<section id="difference">
-  <div class="container-wide">
+<!-- Approach -->
+<section id="approach">
+  <div class="container">
     <div class="reveal">
-      <div class="difference-header">
-        <div class="section-label">The Difference</div>
-        <h2>Same conditions. Different architecture.</h2>
-        <p>Every agent faces pressure — shifting context, competing priorities, accumulating uncertainty. The question isn't whether your agent will be tested, but what happens when it is. Without structural governance, agents lose coherence under stress. Connections degrade, context drifts, and eventually the system has to be rebuilt from scratch.</p>
-        <p>Governed agents absorb the same shocks and hold their shape. They correct, they adapt, they maintain the relationships that make them useful. That's the difference between an agent you monitor and one you trust.</p>
-      </div>
-      <div class="difference-comparison">
-        <div class="diff-panel ungoverned">
-          <canvas class="diff-panel-canvas" id="canvas-ungoverned"></canvas>
-          <div class="diff-panel-label">
-            <h3>Without Governance</h3>
-            <p>Starts strong. Connections form easily. But over time, drift sets in — coherence fades, relationships break down, the system loses its shape.</p>
-          </div>
-        </div>
-        <div class="diff-panel governed">
-          <canvas class="diff-panel-canvas" id="canvas-governed"></canvas>
-          <div class="diff-panel-label">
-            <h3>With Governance</h3>
-            <p>Same perturbations, same pressures. But the agents correct course. Connections adapt rather than break. The structure breathes — and holds.</p>
-          </div>
-        </div>
+      <div class="section-label">Our Approach</div>
+      <h2 class="approach-headline">Capability is easy. <em>Trustworthiness</em> is the hard part.</h2>
+      <div class="approach-body">
+        <p>Every AI company is building agents that can do more. We're building agents that stay good at what they do — next week, next month, and after the hundredth task. That means solving a different problem: not capability, but consistency.</p>
+        <p>Koridos agents are governed at the architectural level. They understand their own limits. They don't quietly drift or subtly degrade. When you give a Koridos agent real responsibility, it rewards that trust by compounding it.</p>
       </div>
     </div>
   </div>
