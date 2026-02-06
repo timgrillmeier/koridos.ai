@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KORIDOS — Intelligence That Holds</title>
+<meta name="description" content="Agentic AI that stays trustworthy over time. Not just capable — careful.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #faf8f5;
+  --bg-warm: #f4f0ea;
+  --bg-card: #ffffff;
+  --text-primary: #1a1714;
+  --text-body: #4a4540;
+  --text-secondary: #7d756a;
+  --text-light: #a9a196;
+  --accent: #C26B3E;
+  --accent-soft: #d4845a;
+  --accent-bg: rgba(194, 107, 62, 0.06);
+  --accent-bg-hover: rgba(194, 107, 62, 0.1);
+  --border: rgba(26, 23, 20, 0.06);
+  --border-hover: rgba(26, 23, 20, 0.12);
+  --shadow-soft: 0 1px 3px rgba(26, 23, 20, 0.04);
+  --shadow-medium: 0 4px 20px rgba(26, 23, 20, 0.06);
+  --radius: 12px;
+  --nav-bg: rgba(250, 248, 245, 0.8);
+  --nav-bg-scrolled: rgba(250, 248, 245, 0.92);
+  --input-bg: var(--bg-card);
+  --btn-text: #fff;
+  --toggle-bg: rgba(26, 23, 20, 0.05);
+  --toggle-hover: rgba(26, 23, 20, 0.1);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg: #0b0a08;
+  --bg-warm: #100e0b;
+  --bg-card: #161412;
+  --text-primary: #e2e0db;
+  --text-body: #a8a49c;
+  --text-secondary: #7a756d;
+  --text-light: #4e4a44;
+  --accent: #C26B3E;
+  --accent-soft: #d4845a;
+  --accent-bg: rgba(194, 107, 62, 0.08);
+  --accent-bg-hover: rgba(194, 107, 62, 0.14);
+  --border: rgba(255, 255, 255, 0.05);
+  --border-hover: rgba(255, 255, 255, 0.1);
+  --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.25);
+  --nav-bg: rgba(11, 10, 8, 0.75);
+  --nav-bg-scrolled: rgba(11, 10, 8, 0.9);
+  --input-bg: #1a1816;
+  --btn-text: #0b0a08;
+  --toggle-bg: rgba(255, 255, 255, 0.05);
+  --toggle-hover: rgba(255, 255, 255, 0.1);
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-body);
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  font-weight: 400;
+  line-height: 1.75;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══ NAVIGATION ═══ */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 1.25rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--nav-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid transparent;
+  transition: all 0.4s ease;
+}
+
+nav.scrolled {
+  border-bottom-color: var(--border);
+  background: var(--nav-bg-scrolled);
+}
+
+.nav-wordmark {
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.32em;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-weight: 400;
+}
+
+.nav-links a:hover {
+  color: var(--accent);
+}
+
+/* ═══ HERO ═══ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 6rem 3rem 4rem;
+  overflow: hidden;
+}
+
+#hero-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  will-change: transform;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 520px;
+}
+
+.hero-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fade-up 0.7s ease-out 0.3s forwards;
+}
+
+.hero-headline {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  line-height: 1.15;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.01em;
+  opacity: 0;
+  animation: fade-up 0.8s ease-out 0.5s forwards;
+}
+
+.hero-headline em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--text-body);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  opacity: 0;
+  animation: fade-up 0.8s ease-out 0.7s forwards;
+}
+
+.hero-blurb {
+  font-size: 0.92rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
+  max-width: 440px;
+  opacity: 0;
+  animation: fade-up 0.8s ease-out 0.9s forwards;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  opacity: 0;
+  animation: fade-up 0.8s ease-out 1.1s forwards;
+}
+
+.cta-primary {
+  padding: 0.82rem 2rem;
+  background: var(--accent);
+  border: none;
+  color: var(--btn-text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.cta-primary:hover {
+  background: var(--accent-soft);
+  box-shadow: 0 4px 16px rgba(194, 107, 62, 0.2);
+  transform: translateY(-1px);
+}
+
+.cta-secondary {
+  padding: 0.82rem 1.6rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-hover);
+  color: var(--text-body);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 400;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.cta-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══ SECTION UTILITIES ═══ */
+section {
+  padding: 7rem 2rem;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.container-wide {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══ APPROACH ═══ */
+#approach {
+  background: var(--bg);
+}
+
+.approach-headline {
+  font-family: 'Syne', sans-serif;
+  font-weight: 500;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  line-height: 1.4;
+  color: var(--text-primary);
+  margin-bottom: 2.5rem;
+  max-width: 600px;
+}
+
+.approach-headline em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.approach-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+}
+
+.approach-body p {
+  font-size: 0.95rem;
+  line-height: 1.85;
+  color: var(--text-body);
+}
+
+/* ═══ PRINCIPLES ═══ */
+#principles {
+  background: var(--bg-warm);
+}
+
+.principles-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.principle-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2.5rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.principle-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-medium);
+}
+
+.principle-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--accent-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  transition: background 0.3s ease;
+}
+
+.principle-card:hover .principle-icon {
+  background: var(--accent-bg-hover);
+}
+
+.principle-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.principle-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 500;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.01em;
+}
+
+.principle-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+/* ═══ DIFFERENCE ═══ */
+#difference {
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.difference-header {
+  text-align: left;
+  margin-bottom: 4rem;
+  max-width: 580px;
+}
+
+.difference-header h2 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 500;
+  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  color: var(--text-primary);
+  line-height: 1.4;
+  margin-bottom: 1.5rem;
+}
+
+.difference-header p {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.85;
+  margin-bottom: 0.8rem;
+}
+
+.difference-header p:last-child {
+  margin-bottom: 0;
+}
+
+.difference-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.diff-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+}
+
+.diff-panel-canvas {
+  width: 100%;
+  height: 280px;
+  display: block;
+}
+
+.diff-panel-label {
+  padding: 1.5rem 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.diff-panel-label h3 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.diff-panel-label p {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.diff-panel.governed {
+  border-color: rgba(194, 107, 62, 0.15);
+}
+
+.diff-panel.governed .diff-panel-label {
+  border-top-color: rgba(194, 107, 62, 0.1);
+}
+
+/* ═══ HORIZON — Early Access ═══ */
+#horizon {
+  background: var(--bg-warm);
+  text-align: center;
+  padding: 8rem 2rem;
+}
+
+.horizon-content h2 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 500;
+  font-size: clamp(1.3rem, 2.6vw, 1.75rem);
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.horizon-content > p {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  max-width: 400px;
+  margin: 0 auto 2.5rem;
+}
+
+.signup-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.signup-row input {
+  flex: 1;
+  padding: 0.82rem 1.2rem;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 400;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.signup-row input::placeholder { color: var(--text-light); }
+
+.signup-row input:focus {
+  border-color: var(--accent-soft);
+  box-shadow: 0 0 0 3px rgba(194, 107, 62, 0.08);
+}
+
+.signup-row button {
+  padding: 0.82rem 1.8rem;
+  background: var(--accent);
+  border: none;
+  color: var(--btn-text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.signup-row button:hover {
+  background: var(--accent-soft);
+  box-shadow: 0 4px 16px rgba(194, 107, 62, 0.2);
+  transform: translateY(-1px);
+}
+
+#signup-confirmation {
+  display: none;
+  margin-top: 1.5rem;
+  color: var(--accent);
+  font-size: 0.88rem;
+}
+
+/* ═══ FOOTER ═══ */
+footer {
+  padding: 2.5rem 3rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg);
+}
+
+.footer-wordmark {
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.28em;
+  color: var(--text-light);
+}
+
+.footer-right {
+  font-size: 0.75rem;
+  color: var(--text-light);
+}
+
+/* ═══ THEME TRANSITION ═══ */
+body,
+nav,
+.principle-card,
+.diff-panel,
+.signup-row input,
+.signup-row button,
+footer {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ═══ THEME TOGGLE ═══ */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--toggle-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0.3rem;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--toggle-hover);
+}
+
+.theme-toggle-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  padding: 0;
+}
+
+.theme-toggle-btn.active {
+  background: var(--bg-card);
+  box-shadow: var(--shadow-soft);
+}
+
+.theme-toggle-btn svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--text-secondary);
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.theme-toggle-btn.active svg {
+  stroke: var(--accent);
+}
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 768px) {
+  nav { padding: 1.1rem 1.5rem; }
+  .nav-links { display: none; }
+  .hero { padding: 6rem 1.5rem 3rem; }
+  .hero-content { max-width: 100%; }
+  section { padding: 4.5rem 1.5rem; }
+  .approach-body { grid-template-columns: 1fr; gap: 1.5rem; }
+  .principles-grid { grid-template-columns: 1fr; }
+  .principle-card { padding: 2rem; }
+  .difference-comparison { grid-template-columns: 1fr; }
+  .diff-panel-canvas { height: 220px; }
+  .hero-ctas { flex-direction: column; align-items: flex-start; }
+  .signup-row { flex-direction: column; }
+  .signup-row input, .signup-row button { width: 100%; }
+  footer {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+    padding: 2rem 1.5rem;
+  }
+  #horizon { padding: 5rem 1.5rem; }
+}
+
+/* ═══ SUBTLE TEXTURE ═══ */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+::selection {
+  background: rgba(194, 107, 62, 0.15);
+  color: var(--text-primary);
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav id="main-nav">
+  <a href="#" class="nav-wordmark">KORIDOS</a>
+  <ul class="nav-links">
+    <li><a href="#approach">Approach</a></li>
+    <li><a href="#principles">Principles</a></li>
+    <li><a href="#difference">The Difference</a></li>
+    <li><a href="#horizon">Early Access</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-label">Governed Agentic Intelligence</div>
+    <h1 class="hero-headline">Agents that <em>earn</em><br>your trust.</h1>
+    <p class="hero-subtitle">AI that stays reliable — not just on day one, but on day three hundred.</p>
+    <p class="hero-blurb">Koridos builds agentic systems with governance at the core. Our agents know their limits, hold their course, and compound trust the longer you work together.</p>
+    <div class="hero-ctas">
+      <a href="#horizon" class="cta-primary">Get Early Access</a>
+      <a href="#approach" class="cta-secondary">How we're different</a>
+    </div>
+  </div>
+</section>
+
+<!-- Approach -->
+<section id="approach">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Our Approach</div>
+      <h2 class="approach-headline">Capability is easy. <em>Trustworthiness</em> is the hard part.</h2>
+      <div class="approach-body">
+        <p>Every AI company is building agents that can do more. We're building agents that stay good at what they do — next week, next month, and after the hundredth task. That means solving a different problem: not capability, but consistency.</p>
+        <p>Koridos agents are governed at the architectural level. They understand their own limits. They don't quietly drift or subtly degrade. When you give a Koridos agent real responsibility, it rewards that trust by compounding it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Principles -->
+<section id="principles">
+  <div class="container-wide">
+    <div class="reveal">
+      <div class="section-label">What We Believe</div>
+      <div class="principles-grid">
+        <div class="principle-card">
+          <div class="principle-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 2.5"/></svg>
+          </div>
+          <h3>Trust Builds Over Time</h3>
+          <p>The real test of an agent isn't the first conversation. It's the fiftieth. We build for the long relationship, not the impressive demo.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <h3>Knowing Your Limits Is Strength</h3>
+          <p>An agent that recognises what it doesn't know is more valuable than one that confidently guesses. Honest boundaries are the foundation of real collaboration.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+          </div>
+          <h3>Navigate, Don't Optimise</h3>
+          <p>Real problems have competing priorities and genuine trade-offs. Good agents find a viable path through the complexity — not the fastest route to a single metric.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 16v-4M12 8h.01"/></svg>
+          </div>
+          <h3>Architecture Before Promises</h3>
+          <p>We don't ask you to trust our agents because we say so. We build them so they're structurally trustworthy — the architecture does the work, not the marketing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Difference -->
+<section id="difference">
+  <div class="container-wide">
+    <div class="reveal">
+      <div class="difference-header">
+        <div class="section-label">The Difference</div>
+        <h2>Same conditions. Different architecture.</h2>
+        <p>Every agent faces pressure — shifting context, competing priorities, accumulating uncertainty. The question isn't whether your agent will be tested, but what happens when it is. Without structural governance, agents lose coherence under stress. Connections degrade, context drifts, and eventually the system has to be rebuilt from scratch.</p>
+        <p>Governed agents absorb the same shocks and hold their shape. They correct, they adapt, they maintain the relationships that make them useful. That's the difference between an agent you monitor and one you trust.</p>
+      </div>
+      <div class="difference-comparison">
+        <div class="diff-panel ungoverned">
+          <canvas class="diff-panel-canvas" id="canvas-ungoverned"></canvas>
+          <div class="diff-panel-label">
+            <h3>Without Governance</h3>
+            <p>Starts strong. Connections form easily. But over time, drift sets in — coherence fades, relationships break down, the system loses its shape.</p>
+          </div>
+        </div>
+        <div class="diff-panel governed">
+          <canvas class="diff-panel-canvas" id="canvas-governed"></canvas>
+          <div class="diff-panel-label">
+            <h3>With Governance</h3>
+            <p>Same perturbations, same pressures. But the agents correct course. Connections adapt rather than break. The structure breathes — and holds.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Horizon — Early Access -->
+<section id="horizon" style="display: none;>
+  <div class="container">
+    <div class="reveal">
+      <div class="horizon-content">
+        <h2>We're nearly ready.</h2>
+        <p>Leave your email and we'll let you know when our first agents are available to try.</p>
+        <div class="signup-row">
+          <input type="email" placeholder="your@email.com" aria-label="Email address">
+          <button type="button" onclick="handleSignup()">Get Early Access</button>
+        </div>
+        <p id="signup-confirmation"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-wordmark">KORIDOS</div>
+  <div class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+    <button class="theme-toggle-btn" data-theme-value="light" aria-label="Light mode">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+    <button class="theme-toggle-btn" data-theme-value="dark" aria-label="Dark mode">
+      <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+  <div class="footer-right">© 2026 Koridos Pty Ltd</div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════
+// THEME MANAGEMENT
+// ═══════════════════════════════════════
+(function() {
+  const root = document.documentElement;
+
+  function getSystemTheme() {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  function applyTheme(theme) {
+    root.setAttribute('data-theme', theme);
+    // Update toggle buttons
+    document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.themeValue === theme);
+    });
+  }
+
+  // Check for saved preference, otherwise use system
+  const saved = localStorage.getItem('koridos-theme');
+  applyTheme(saved || getSystemTheme());
+
+  // Listen for system changes (only if no manual override)
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('koridos-theme')) {
+      applyTheme(e.matches ? 'dark' : 'light');
+    }
+  });
+
+  // Toggle buttons
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.theme-toggle-btn');
+    if (btn) {
+      const theme = btn.dataset.themeValue;
+      localStorage.setItem('koridos-theme', theme);
+      applyTheme(theme);
+    }
+  });
+})();
+
+// ═══════════════════════════════════════
+// HERO CANVAS — Governed Graph System
+// Nodes negotiate distance: attract when far, repel when close.
+// Connections strengthen with sustained proximity.
+// ═══════════════════════════════════════
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, nodes = [], mouse = { x: -1000, y: -1000 };
+  const NODE_COUNT = 50;
+  const CONNECT_DIST = 260;
+  const REPEL_DIST = 50;
+
+  function isDark() {
+    return document.documentElement.getAttribute('data-theme') === 'dark';
+  }
+
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    W = canvas.offsetWidth;
+    H = canvas.offsetHeight;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function init() {
+    resize();
+    nodes = [];
+    for (let i = 0; i < NODE_COUNT; i++) {
+      const heading = Math.random() * Math.PI * 2;
+      const speed = 0.15 + Math.random() * 0.25;
+      nodes.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: Math.cos(heading) * speed,
+        vy: Math.sin(heading) * speed,
+        heading: heading,
+        headingDrift: (Math.random() - 0.5) * 0.008, // slow turn rate
+        speed: speed,
+        radius: 1.2 + Math.random() * 3,
+        connections: {}
+      });
+    }
+  }
+
+  function tick() {
+    for (let i = 0; i < nodes.length; i++) {
+      const a = nodes[i];
+
+      // Each agent has its own heading that slowly drifts
+      a.heading += a.headingDrift;
+      // Occasionally shift heading more dramatically
+      if (Math.random() < 0.005) {
+        a.headingDrift = (Math.random() - 0.5) * 0.012;
+      }
+      // Gentle thrust along heading — agents move with intent
+      a.vx += Math.cos(a.heading) * 0.007;
+      a.vy += Math.sin(a.heading) * 0.007;
+
+      // Random perturbation on top
+      a.vx += (Math.random() - 0.5) * 0.06;
+      a.vy += (Math.random() - 0.5) * 0.06;
+
+      for (let j = i + 1; j < nodes.length; j++) {
+        const b = nodes[j];
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+
+        // Only repel when too close — don't attract
+        if (dist < REPEL_DIST) {
+          const repel = (REPEL_DIST - dist) * 0.002;
+          const fx = (dx / dist) * repel;
+          const fy = (dy / dist) * repel;
+          a.vx -= fx;
+          a.vy -= fy;
+          b.vx += fx;
+          b.vy += fy;
+        }
+
+        // Transient connections — build fast, decay fast
+        if (dist < CONNECT_DIST) {
+          const key = i + '-' + j;
+          const proximity = 1 - (dist / CONNECT_DIST);
+          a.connections[key] = Math.min((a.connections[key] || 0) + proximity * 0.04, 1);
+        }
+      }
+
+      // Decay ALL connections each frame (transient by default)
+      for (const key in a.connections) {
+        a.connections[key] -= 0.015;
+        if (a.connections[key] <= 0) delete a.connections[key];
+      }
+
+      // Mouse influence
+      const mdx = mouse.x - a.x;
+      const mdy = mouse.y - a.y;
+      const mdist = Math.sqrt(mdx * mdx + mdy * mdy) || 1;
+      if (mdist < 200) {
+        const mf = (200 - mdist) * 0.00006;
+        a.vx += (mdx / mdist) * mf;
+        a.vy += (mdy / mdist) * mf;
+      }
+
+      // Damping — enough to prevent runaway but not kill momentum
+      a.vx *= 0.985;
+      a.vy *= 0.985;
+      a.x += a.vx;
+      a.y += a.vy;
+
+      // Wrap around edges with margin (more open feel)
+      const margin = 30;
+      if (a.x < -margin) a.x = W + margin;
+      if (a.x > W + margin) a.x = -margin;
+      if (a.y < -margin) a.y = H + margin;
+      if (a.y > H + margin) a.y = -margin;
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const dark = isDark();
+    const lineAlpha = dark ? 0.2 : 0.14;
+    const dotBase = dark ? 0.25 : 0.18;
+    const dotGlow = dark ? 0.4 : 0.3;
+    const haloAlpha = dark ? 0.05 : 0.035;
+
+    // Draw connections
+    for (let i = 0; i < nodes.length; i++) {
+      const a = nodes[i];
+      for (const key in a.connections) {
+        const strength = a.connections[key];
+        if (strength < 0.03) continue;
+        const j = parseInt(key.split('-')[1]);
+        const b = nodes[j];
+
+        // Skip connections that cross the wrap boundary
+        const dx = Math.abs(a.x - b.x);
+        const dy = Math.abs(a.y - b.y);
+        if (dx > W * 0.5 || dy > H * 0.5) continue;
+
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.strokeStyle = `rgba(194, 107, 62, ${strength * lineAlpha})`;
+        ctx.lineWidth = strength * 1.2;
+        ctx.stroke();
+      }
+    }
+
+    // Draw nodes
+    for (const n of nodes) {
+      let connCount = 0;
+      for (const key in n.connections) {
+        if (n.connections[key] > 0.2) connCount++;
+      }
+      const glow = Math.min(connCount / 4, 1);
+
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(194, 107, 62, ${dotBase + glow * dotGlow})`;
+      ctx.fill();
+
+      if (glow > 0.3) {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.radius + 3, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(194, 107, 62, ${glow * haloAlpha})`;
+        ctx.fill();
+      }
+    }
+  }
+
+  function loop() {
+    tick();
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    mouse.x = -1000;
+    mouse.y = -1000;
+  });
+
+  window.addEventListener('resize', () => {
+    resize();
+    for (const n of nodes) {
+      n.x = Math.min(n.x, W - 10);
+      n.y = Math.min(n.y, H - 10);
+    }
+  });
+
+  init();
+  loop();
+
+  // Parallax
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    canvas.style.transform = `translateY(${scrollY * 0.25}px)`;
+  });
+})();
+
+
+// ═══════════════════════════════════════
+// DIFFERENCE CANVASES — Governed vs Ungoverned
+// Governed vs Ungoverned — disconnection-based restart
+// ═══════════════════════════════════════
+(function() {
+  const PANEL_NODES = 18;
+  const BASE_IDEAL = 55;
+  const CONNECTED_THRESHOLD = 0.1;
+  const DISCONNECT_RESTART = 0.40;
+
+  function isDark() {
+    return document.documentElement.getAttribute('data-theme') === 'dark';
+  }
+
+  function createSystem(canvasId, governed) {
+    const canvas = document.getElementById(canvasId);
+    const ctx = canvas.getContext('2d');
+    let W, H, nodes = [], running = false, time = 0;
+    let systemOpacity = 1;
+    let fadePhase = 'active';
+    let fadeTimer = 0;
+
+    function resize() {
+      const dpr = window.devicePixelRatio || 1;
+      W = canvas.offsetWidth;
+      H = canvas.offsetHeight;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function initNodes() {
+      nodes = [];
+      const cx = W / 2, cy = H / 2;
+      for (let i = 0; i < PANEL_NODES; i++) {
+        const angle = (i / PANEL_NODES) * Math.PI * 2;
+        const ring = i < PANEL_NODES / 2 ? 45 : 80;
+        nodes.push({
+          x: cx + Math.cos(angle) * ring + (Math.random() - 0.5) * 15,
+          y: cy + Math.sin(angle) * ring + (Math.random() - 0.5) * 15,
+          vx: 0, vy: 0,
+          homeX: cx + Math.cos(angle) * ring,
+          homeY: cy + Math.sin(angle) * ring,
+          radius: 2.2,
+          drift: 0,
+          connections: {}
+        });
+      }
+    }
+
+    function init() {
+      resize();
+      initNodes();
+      systemOpacity = 1;
+      fadePhase = 'active';
+      fadeTimer = 0;
+      time = 0;
+    }
+
+    function getDisconnectedRatio() {
+      let disconnected = 0;
+      for (let i = 0; i < nodes.length; i++) {
+        let hasConnection = false;
+        for (const key in nodes[i].connections) {
+          if (nodes[i].connections[key] > CONNECTED_THRESHOLD) {
+            hasConnection = true;
+            break;
+          }
+        }
+        if (!hasConnection) disconnected++;
+      }
+      return disconnected / nodes.length;
+    }
+
+    function tick() {
+      time++;
+
+      if (!governed) {
+        if (fadePhase === 'active') {
+          if (time > 120) {
+            const ratio = getDisconnectedRatio();
+            if (ratio >= DISCONNECT_RESTART) {
+              fadePhase = 'fading';
+              fadeTimer = 0;
+            }
+          }
+        } else if (fadePhase === 'fading') {
+          fadeTimer++;
+          systemOpacity = Math.max(1 - fadeTimer / 80, 0);
+          if (systemOpacity <= 0) {
+            fadePhase = 'waiting';
+            fadeTimer = 0;
+          }
+        } else if (fadePhase === 'waiting') {
+          fadeTimer++;
+          if (fadeTimer > 50) {
+            fadePhase = 'rebuilding';
+            initNodes();
+            systemOpacity = 0;
+            fadeTimer = 0;
+            time = 0;
+          }
+        } else if (fadePhase === 'rebuilding') {
+          fadeTimer++;
+          systemOpacity = Math.min(fadeTimer / 50, 1);
+          if (systemOpacity >= 1) {
+            fadePhase = 'active';
+          }
+        }
+      }
+
+      for (const n of nodes) {
+        const perturbScale = governed ? 0.078 : 0.117 + n.drift * 0.015;
+        n.vx += (Math.random() - 0.5) * perturbScale;
+        n.vy += (Math.random() - 0.5) * perturbScale;
+      }
+
+      // Medium wave every ~1.5s
+      if (time % 90 === 0) {
+        const strength = governed ? 0.5 : 0.85;
+        for (const n of nodes) {
+          n.vx += (Math.random() - 0.5) * strength;
+          n.vy += (Math.random() - 0.5) * strength;
+        }
+      }
+
+      // Asymmetric nudge every ~1s — affects random half of nodes
+      if (time % 60 === 0) {
+        const angle = Math.random() * Math.PI * 2;
+        const push = governed ? 0.3 : 0.5;
+        for (const n of nodes) {
+          if (Math.random() > 0.5) {
+            n.vx += Math.cos(angle) * push * (0.5 + Math.random());
+            n.vy += Math.sin(angle) * push * (0.5 + Math.random());
+          }
+        }
+      }
+
+      // Sharp individual jolt — 2% chance per node per frame
+      for (const n of nodes) {
+        if (Math.random() < 0.02) {
+          const jolt = governed ? 0.4 : 0.6;
+          n.vx += (Math.random() - 0.5) * jolt;
+          n.vy += (Math.random() - 0.5) * jolt;
+        }
+      }
+
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
+
+        for (let j = i + 1; j < nodes.length; j++) {
+          const b = nodes[j];
+          const dx = b.x - a.x;
+          const dy = b.y - a.y;
+          const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+
+          if (dist < 160) {
+            const ideal = governed ? BASE_IDEAL : BASE_IDEAL + (a.drift + b.drift) * 2.5;
+            const diff = dist - ideal;
+            const force = diff * (governed ? 0.0005 : 0.0002);
+            const fx = (dx / dist) * force;
+            const fy = (dy / dist) * force;
+            a.vx += fx;
+            a.vy += fy;
+            b.vx -= fx;
+            b.vy -= fy;
+
+            const key = i + '-' + j;
+            if (dist < 90) {
+              const buildRate = governed ? 0.012 : Math.max(0.012 - a.drift * 0.0015, 0.0005);
+              a.connections[key] = Math.min((a.connections[key] || 0) + buildRate, 1);
+            } else {
+              const decayRate = governed ? 0.004 : 0.006 + a.drift * 0.004;
+              a.connections[key] = Math.max((a.connections[key] || 0) - decayRate, 0);
+            }
+          } else {
+            const key = i + '-' + j;
+            if (a.connections[key]) {
+              const decayRate = governed ? 0.003 : 0.008 + a.drift * 0.003;
+              a.connections[key] = Math.max(a.connections[key] - decayRate, 0);
+            }
+          }
+        }
+
+        if (governed) {
+          const hx = a.homeX - a.x;
+          const hy = a.homeY - a.y;
+          a.vx += hx * 0.001;
+          a.vy += hy * 0.001;
+        } else {
+          a.drift += 0.006;
+        }
+
+        const gcx = W / 2 - a.x;
+        const gcy = H / 2 - a.y;
+        const grav = governed ? 0.00015 : Math.max(0.00012 - a.drift * 0.00003, 0.000002);
+        a.vx += gcx * grav;
+        a.vy += gcy * grav;
+
+        const damp = governed ? 0.975 : 0.982;
+        a.vx *= damp;
+        a.vy *= damp;
+        a.x += a.vx;
+        a.y += a.vy;
+
+        const pad = 15;
+        if (a.x < pad) a.vx += 0.1;
+        if (a.x > W - pad) a.vx -= 0.1;
+        if (a.y < pad) a.vy += 0.1;
+        if (a.y > H - pad) a.vy -= 0.1;
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      ctx.globalAlpha = systemOpacity;
+      const dark = isDark();
+      const govAlphaMul = dark ? 1.4 : 1;
+
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
+        for (const key in a.connections) {
+          const s = a.connections[key];
+          if (s < 0.02) continue;
+          const j = parseInt(key.split('-')[1]);
+          const b = nodes[j];
+
+          const accentR = governed ? 194 : 120;
+          const accentG = governed ? 107 : 115;
+          const accentB = governed ? 62 : 110;
+          const alpha = s * (governed ? 0.25 * govAlphaMul : 0.15);
+
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = 'rgba(' + accentR + ',' + accentG + ',' + accentB + ',' + alpha + ')';
+          ctx.lineWidth = s * 1.5;
+          ctx.stroke();
+        }
+      }
+
+      for (const n of nodes) {
+        let connCount = 0;
+        for (const key in n.connections) {
+          if (n.connections[key] > 0.15) connCount++;
+        }
+        const vitality = governed
+          ? (0.35 + Math.min(connCount / 4, 1) * 0.5) * govAlphaMul
+          : Math.max(0.4 - n.drift * 0.018, 0.06);
+
+        const r = governed ? 194 : Math.max(194 - n.drift * 5, 120);
+        const g = governed ? 107 : Math.max(107 - n.drift * 3, 115);
+        const b = governed ? 62 : Math.max(62 + n.drift * 4, 62);
+
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + vitality + ')';
+        ctx.fill();
+
+        if (governed && connCount > 2) {
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, n.radius + 4, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(194, 107, 62, ' + (0.04 * govAlphaMul) + ')';
+          ctx.fill();
+        }
+      }
+
+      ctx.globalAlpha = 1;
+    }
+
+    function loop() {
+      if (!running) return;
+      tick();
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !running) {
+          running = true;
+          init();
+          loop();
+        }
+      });
+    }, { threshold: 0.2 });
+
+    observer.observe(canvas);
+    window.addEventListener('resize', resize);
+  }
+
+  createSystem('canvas-ungoverned', false);
+  createSystem('canvas-governed', true);
+})();
+
+
+// ═══════════════════════════════════════
+// SCROLL REVEAL + NAV
+// ═══════════════════════════════════════
+const reveals = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+reveals.forEach(el => revealObs.observe(el));
+
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+function handleSignup() {
+  const input = document.querySelector('.signup-row input');
+  const confirmation = document.getElementById('signup-confirmation');
+  const email = input.value.trim();
+  if (email && email.includes('@') && email.includes('.')) {
+    confirmation.textContent = "You're on the list. We'll be in touch soon.";
+    confirmation.style.display = 'block';
+    input.value = '';
+  } else {
+    input.style.borderColor = '#d4675a';
+    setTimeout(() => { input.style.borderColor = ''; }, 1500);
+  }
+}
+
+document.querySelector('.signup-row input').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') handleSignup();
+});
+</script>
+</body>
+</html>
